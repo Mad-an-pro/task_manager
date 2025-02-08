@@ -16,15 +16,15 @@ import {
   updateDoc,
 } from "firebase/firestore";
 
-// Firebase Config
+// Firebase Config from Environment Variables
 const firebaseConfig = {
-  apiKey: "AIzaSyDAUaxbBV2-sdDgexAhdy0h1XgBcMuWnN4",
-  authDomain: "todo-219ce.firebaseapp.com",
-  projectId: "todo-219ce",
-  storageBucket: "todo-219ce.firebasestorage.app",
-  messagingSenderId: "494738606732",
-  appId: "1:494738606732:web:fbffd3fa66e3a856bdc9a9",
-  measurementId: "G-N41MMTS0KK"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
@@ -47,7 +47,7 @@ const App = () => {
     if (docSnap.exists()) {
       setTasks(docSnap.data().tasks || []);
     } else {
-      await setDoc(docRef, { tasks: [] }); // Initialize document if not exists
+      await setDoc(docRef, { tasks: [] });
     }
   };
 
@@ -169,25 +169,16 @@ const App = () => {
               <p className="text-gray-400">No tasks available. Add some!</p>
             ) : (
               tasks.map((task, index) => (
-                <li
-                  key={index}
-                  className="bg-gray-800 p-4 rounded-lg flex justify-between items-center"
-                >
+                <li key={index} className="bg-gray-800 p-4 rounded-lg flex justify-between items-center">
                   <div>
                     <h3 className="text-xl font-semibold">{task.title}</h3>
                     <p className="text-gray-400">{task.desc}</p>
                   </div>
                   <div className="flex gap-3">
-                    <button
-                      onClick={() => handleTaskEdit(index)}
-                      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-bold transition duration-300"
-                    >
+                    <button onClick={() => handleTaskEdit(index)} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-bold transition duration-300">
                       Edit
                     </button>
-                    <button
-                      onClick={() => handleTaskDelete(index)}
-                      className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-bold transition duration-300"
-                    >
+                    <button onClick={() => handleTaskDelete(index)} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-bold transition duration-300">
                       Delete
                     </button>
                   </div>
@@ -199,13 +190,8 @@ const App = () => {
       ) : (
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-6">Welcome to Task Manager</h1>
-          <p className="text-gray-400 mb-6">
-            Sign in with Google to start managing your tasks.
-          </p>
-          <button
-            onClick={handleSignIn}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-bold transition duration-300"
-          >
+          <p className="text-gray-400 mb-6">Sign in with Google to start managing your tasks.</p>
+          <button onClick={handleSignIn} className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-bold transition duration-300">
             Sign In with Google
           </button>
         </div>
